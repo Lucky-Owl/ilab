@@ -37,7 +37,7 @@ void array_destruct ( array_t *arr )
   free ( arr -> array );
 }
 
-myType get_elem ( array_t *arr, int n )
+myType array_getElement ( array_t *arr, int n )
 {
   assert ( ( arr != NULL )&&( ( arr -> array ) != NULL ) );
   assert ( ( arr-> length) != 0xDEADBEAF );
@@ -45,13 +45,13 @@ myType get_elem ( array_t *arr, int n )
   return ( arr -> array [n] );
 }
 
-int get_len( array_t *arr )
+int array_getLength ( array_t *arr )
 {
   assert ( arr != NULL );
   return ( arr -> length );
 }
 
-void set_elem ( array_t *arr, int n, myType val)
+void array_setElement ( array_t *arr, int n, myType val)
 {
   assert ( ( arr != NULL )&&( ( arr -> array ) != NULL ) );
   assert ( ( arr-> length) != 0xDEADBEAF );
@@ -59,17 +59,17 @@ void set_elem ( array_t *arr, int n, myType val)
   arr -> array [n] = val;
 }
 
-void array_randval ( array_t *arr )
+void array_randomValues ( array_t *arr )
 {
   assert ( ( arr != NULL )&&( ( arr -> array ) != NULL ) );
-  assert ( (get_len ( arr ) ) != 0xDEADBEAF );
+  assert ( (array_getLength ( arr ) ) != 0xDEADBEAF );
   int i = 0,
       val = 0;
   srand ( time ( NULL ) );
-  for ( i = 0; i < ( get_len ( arr ) ); i++ )
+  for ( i = 0; i < ( array_getLength ( arr ) ); i++ )
   {
     val = rand () % 200 - 100;
-    set_elem ( arr, i, val );
+    array_setElement ( arr, i, val );
   }
 }
 
@@ -82,47 +82,46 @@ int array_dump ( array_t *arr )
   }
   else
   {
-    if ( (get_len ( arr ) ) == 0xDEADBEAF )
+    if ( ( array_getLength ( arr ) ) == 0xDEADBEAF )
     {
       printf ("Array_t object was destructed.\n");
       return -2;
     }
     else
     {
-      printf ( "Number of elements: %d \n", ( get_len ( arr ) ) );
+      printf ( "Number of elements: %d \n", ( array_getLength ( arr ) ) );
       int i = 0;
-      for ( i = 0; i < ( get_len ( arr ) ); i++ )
+      for ( i = 0; i < ( array_getLength ( arr ) ); i++ )
       {
-        printf( "%d ", ( get_elem ( arr, i ) ) );
+        printf( "%d ", ( array_getElement ( arr, i ) ) );
       }
       printf ( "\n" );
-      return 1;
     }
   }
   return 0;
 }
 
-void gnome_sort ( array_t *arr )
+void array_gnomeSort ( array_t *arr )
 {
   assert ( ( arr != NULL )&&( ( arr -> array ) != NULL ) );
-  assert ( (get_len ( arr ) ) != 0xDEADBEAF );
+  assert ( ( array_getLength ( arr ) ) != 0xDEADBEAF );
   int i = 1;
   myType tmp = 0; 
-  while ( i < ( get_len ( arr ) ) ) 
+  while ( i < ( array_getLength ( arr ) ) ) 
   {
     if ( i==0 ) 
     {
       i = 1;
     }
-    if ( ( get_elem ( arr, ( i-1 ) ) ) <= ( get_elem ( arr, i ) ) )
+    if ( ( array_getElement ( arr, ( i-1 ) ) ) <= ( array_getElement ( arr, i ) ) )
     {
       i++;
     } 
     else 
     {
-      tmp = get_elem ( arr, i ) ;
-      set_elem ( arr, i, get_elem ( arr, ( i-1 ) ) );
-      set_elem ( arr, ( i-1 ), tmp );
+      tmp = array_getElement ( arr, i ) ;
+      array_setElement ( arr, i, array_getElement ( arr, ( i-1 ) ) );
+      array_setElement ( arr, ( i-1 ), tmp );
       i--;
     }
   }
@@ -137,9 +136,9 @@ int main()
   array_dump ( &arr );
   array_construct ( &arr, l );
   array_dump ( &arr );
-  array_randval ( &arr );
+  array_randomValues ( &arr );
   array_dump ( &arr );
-  gnome_sort ( &arr );
+  array_gnomeSort ( &arr );
   array_dump ( &arr );
   array_destruct ( &arr );
   array_dump ( &arr ); 
