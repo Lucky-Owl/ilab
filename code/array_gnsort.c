@@ -11,10 +11,13 @@
 //!
 //}===================================================================
 
+//----Headers------------------------------------------------------------------
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h> 
+//-----------------------------------------------------------------------------
 
+//----Types--------------------------------------------------------------------
 typedef int myType;
 
 typedef struct array_t
@@ -22,8 +25,10 @@ typedef struct array_t
   int length;
   myType *array;
 } array_t;
+//-----------------------------------------------------------------------------
 
-void array_construct ( array_t *arr, int l )
+//----Methods------------------------------------------------------------------
+void array_construct ( array_t *arr, int l ) //array is initialized with zeros
 { 
   assert ( l > 0 );
   arr -> length = l;
@@ -32,7 +37,7 @@ void array_construct ( array_t *arr, int l )
 
 void array_destruct ( array_t *arr )
 {
-  assert ( ( arr != NULL )&&( ( arr -> array ) != NULL ) );
+  assert ( ( arr != NULL )&&( ( arr -> array ) != NULL ) ); 
   arr -> length = 0xDEADBEAF;
   free ( arr -> array );
 }
@@ -59,7 +64,7 @@ void array_setElement ( array_t *arr, int n, myType val)
   arr -> array [n] = val;
 }
 
-void array_randomValues ( array_t *arr )
+void array_randomValues ( array_t *arr ) //fills the array with random values from -100 to 100, works only when myType is int
 {
   assert ( ( arr != NULL )&&( ( arr -> array ) != NULL ) );
   assert ( (array_getLength ( arr ) ) != 0xDEADBEAF );
@@ -73,7 +78,7 @@ void array_randomValues ( array_t *arr )
   }
 }
 
-int array_dump ( array_t *arr )
+int array_dump ( array_t *arr ) //works only when myType is int, because of printf
 {
   if ( ( arr == NULL )||( (arr -> array) == NULL ) )
   {
@@ -85,7 +90,7 @@ int array_dump ( array_t *arr )
     if ( ( array_getLength ( arr ) ) == 0xDEADBEAF )
     {
       printf ("Array_t object was destructed.\n");
-      return -2;
+      return 1;
     }
     else
     {
@@ -96,9 +101,9 @@ int array_dump ( array_t *arr )
         printf( "%d ", ( array_getElement ( arr, i ) ) );
       }
       printf ( "\n" );
+      return 0;
     }
   }
-  return 0;
 }
 
 void array_gnomeSort ( array_t *arr )
@@ -126,6 +131,7 @@ void array_gnomeSort ( array_t *arr )
     }
   }
 }
+//-----------------------------------------------------------------------------
 
 int main()
 { 
